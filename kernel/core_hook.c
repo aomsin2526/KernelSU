@@ -495,12 +495,17 @@ static int ksu_umount_mnt(struct path *path, int flags)
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 9, 0) || defined(KSU_UMOUNT)
 	return path_umount(path, flags);
 #elif LINUX_VERSION_CODE >= KERNEL_VERSION(4, 4, 0)
+	
 	int err = ksu_path_umount(path, flags);
+	
 	if (err) {
 		pr_info("umount %s failed: %d\n", path->dentry->d_iname, err);
 	}else{
 		pr_info("umount %s successful: %d\n", path->dentry->d_iname, err);
 	}
+
+	return err;
+	
 #else
 	//not tested
 #endif
